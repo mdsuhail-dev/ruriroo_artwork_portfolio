@@ -1,0 +1,26 @@
+{
+  "artworks": [
+    {
+      "id": "oRzlAAXZ9j",
+      "slug": "my-little-pony-in-my-style-AAXZ9j",
+      "title": "My Little Pony in my style",
+      "category": "figures",
+      "description": "Just a masterpiece",
+      "tags": [
+        "Pencil",
+        "Colors"
+      ],
+      "year": 2026,
+      "imageCount": 1,
+      "images": [
+        "/uploads/oRzlAAXZ9j/oRzlAAXZ9j.png"
+      ],
+      "palette": [],
+      "featured": true,
+      "published": false,
+      "scheduledAt": null,
+      "createdAt": "2026-05-17T12:11:21.613Z",
+      "updatedAt": "2026-05-17T12:28:40.338Z"
+    }
+  ]
+}
