@@ -9,7 +9,6 @@ type GridItem = {
   title: string;
   href: string;
   imageSrc: string;
-  source: "upload" | "ig";
 };
 
 interface Props {
