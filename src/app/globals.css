@@ -2,59 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── CSS Custom Properties ─────────────────────────────────────────── */
-:root {
-  --font-cormorant: "Cormorant Garamond", Georgia, serif;
-  --font-dm-sans: "DM Sans", system-ui, sans-serif;
-  --font-caveat: "Caveat", cursive;
-
-  /* Dark theme (default) */
+/* ── Dark Theme (default) ───────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
   --color-void: #0B0910;
   --color-surface: #13111A;
   --color-surface2: #1C1826;
-  --color-border: #2A2232;
+  --color-border: rgba(255,255,255,0.08);
   --color-rose: #C85F88;
   --color-rose-bright: #E879A0;
   --color-blue: #7BA8D4;
   --color-amber: #C8963C;
   --color-cream: #F0EBE3;
-  --color-muted: #A09490;
-  --color-star: #E8C87A;
+  --color-muted: #8A8085;
   --color-faint: #5A5258;
-
-  /* Easing */
-  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-circ: cubic-bezier(0, 0.55, 0.45, 1);
-
-  /* Touch tap highlight */
-  -webkit-tap-highlight-color: transparent;
+  --color-star: #E8C87A;
+  --grain-opacity: 0.03;
+  --shadow-card: 0 4px 32px rgba(0,0,0,0.4);
 }
 
-/* ── Light Theme ─────────────────────────────────────────────────────── */
+/* ── Light Theme ────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  --color-void: #FAF7F2;
-  --color-surface: #F2EDE6;
-  --color-surface2: #EDE5DB;
-  --color-border: #D8CEBF;
-  --color-rose: #B84070;
-  --color-rose-bright: #D45080;
-  --color-blue: #4A78A8;
-  --color-amber: #A87030;
-  --color-cream: #1A1218;
-  --color-muted: #6A5A58;
-  --color-star: #B88A30;
-  --color-faint: #B0A8A0;
+  --color-void: #FAFAF8;
+  --color-surface: #F2EDE8;
+  --color-surface2: #E8E2DB;
+  --color-border: rgba(0,0,0,0.1);
+  --color-rose: #C04878;
+  --color-rose-bright: #E0608A;
+  --color-blue: #4A7BA8;
+  --color-amber: #A07828;
+  --color-cream: #1A1620;
+  --color-muted: #6A6068;
+  --color-faint: #9A9298;
+  --color-star: #A07828;
+  --grain-opacity: 0.015;
+  --shadow-card: 0 4px 32px rgba(0,0,0,0.1);
 }
 
-[data-theme="light"] body {
-  background-color: var(--color-void);
-  color: var(--color-cream);
+/* ── Font Variables ─────────────────────────────────────────────────── */
+:root {
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+  --font-caveat: "Caveat", cursive;
 }
 
-[data-theme="light"] .grain-overlay { opacity: 0.015; }
-
-
-/* ── Base Reset ─────────────────────────────────────────────────────── */
+/* ── Reset ──────────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -64,9 +56,13 @@
 
 html {
   overflow-x: hidden;
-  scroll-behavior: auto; /* Lenis handles smooth scrolling */
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Theme transition — smooth on toggle */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -78,54 +74,46 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  cursor: none; /* Custom cursor — disabled on mobile below */
-  touch-action: pan-y; /* Allow vertical scroll gestures */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ── Custom Scrollbar ───────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 3px; }
+/* Only use custom cursor on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+}
+
+::-webkit-scrollbar { width: 2px; }
 ::-webkit-scrollbar-track { background: var(--color-void); }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-rose); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 1px; }
 
-/* ── Selection ──────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(200, 95, 136, 0.3);
+  background: rgba(200, 95, 136, 0.25);
   color: var(--color-cream);
-}
-
-/* ── Typography Base ────────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-cormorant);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
 }
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
-/* ── Utility Classes ────────────────────────────────────────────────── */
-@layer components {
-  .star {
-    display: inline-block;
-    color: var(--color-star);
-    font-size: 0.8em;
-    line-height: 1;
-    vertical-align: middle;
-  }
+/* ── Typography ─────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant);
+  font-weight: 400;
+  line-height: 1.1;
+}
 
+/* ── Utilities ──────────────────────────────────────────────────────── */
+@layer components {
   .container-site {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1400px;
     margin-inline: auto;
-    padding-inline: clamp(1rem, 4vw, 4rem);
+    padding-inline: clamp(1.25rem, 5vw, 5rem);
   }
 
   .label {
     font-family: var(--font-dm-sans);
-    font-size: clamp(0.6rem, 1.5vw, 0.65rem);
-    font-weight: 500;
+    font-size: 0.6rem;
+    font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-muted);
@@ -137,49 +125,47 @@ img { display: block; max-width: 100%; }
     font-weight: 500;
   }
 
+  .glass-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* Artwork card — clean, no hover on touch */
+  .artwork-card {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+    transition: box-shadow 0.4s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .artwork-card:hover {
+      box-shadow: var(--shadow-card);
+    }
+    .artwork-card:hover .artwork-image {
+      transform: scale(1.04);
+    }
+  }
+
+  .artwork-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   .heading-display {
     font-family: var(--font-cormorant);
-    font-size: clamp(3rem, 12vw, 9rem);
+    font-size: clamp(3.5rem, 12vw, 9rem);
     font-weight: 300;
     line-height: 0.95;
     letter-spacing: -0.03em;
   }
-
-  .glass-card {
-    background: rgba(19, 17, 26, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(42, 34, 50, 0.8);
-    border-radius: 2px;
-  }
-
-  .artwork-card {
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.5s var(--ease-expo);
-  }
-
-  .artwork-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid transparent;
-    border-radius: inherit;
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
-    pointer-events: none;
-  }
-
-  /* Hover only on non-touch devices */
-  @media (hover: hover) {
-    .artwork-card:hover { transform: translateY(-6px) scale(1.015); }
-    .artwork-card:hover::after {
-      border-color: rgba(200, 95, 136, 0.3);
-      box-shadow: 0 8px 60px rgba(200, 95, 136, 0.15), 0 0 0 1px rgba(200, 95, 136, 0.1);
-    }
-  }
 }
 
-/* ── Grain Overlay ──────────────────────────────────────────────────── */
+/* ── Grain overlay ──────────────────────────────────────────────────── */
 .grain-overlay {
   position: fixed;
   inset: -50%;
@@ -187,127 +173,57 @@ img { display: block; max-width: 100%; }
   height: 200%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.032;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 2s steps(6) infinite;
-  will-change: transform;
+  animation: grain 1s steps(10) infinite;
 }
 
 @keyframes grain {
-  0%   { transform: translate(0, 0); }
-  17%  { transform: translate(-2%, -3%); }
-  33%  { transform: translate(3%, 1%); }
-  50%  { transform: translate(-1%, 4%); }
-  67%  { transform: translate(2%, -2%); }
-  83%  { transform: translate(-3%, 3%); }
-  100% { transform: translate(0, 0); }
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, -3%); }
+  40% { transform: translate(3%, 1%); }
+  60% { transform: translate(-1%, 4%); }
+  80% { transform: translate(2%, -2%); }
 }
 
-/* ── Page Transitions ───────────────────────────────────────────────── */
-.page-enter {
-  animation: pageEnter 0.7s var(--ease-expo) forwards;
+/* ── Theme transitions for all elements ─────────────────────────────── */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
 }
 
-@keyframes pageEnter {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Override for elements that should NOT transition color (images, etc.) */
+img, video, svg, canvas {
+  transition: none;
 }
 
-/* ── Custom Cursor ──────────────────────────────────────────────────── */
-.cursor-ring {
-  position: fixed;
-  pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
+/* Override for elements with their own transitions */
+.artwork-image, .artwork-card {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
-/* ── Reveal animations ──────────────────────────────────────────────── */
-.reveal-hidden {
-  opacity: 0;
-  transform: translateY(32px);
+/* ── Focus visible ──────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
-.reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo);
-}
-
-/* ── Image styles ───────────────────────────────────────────────────── */
-.artwork-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-expo);
-  will-change: transform;
-}
-
-@media (hover: hover) {
-  .artwork-card:hover .artwork-image { transform: scale(1.06); }
-}
-
-/* ── Hero gradient ──────────────────────────────────────────────────── */
-.hero-gradient {
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 40%,
-    rgba(200, 95, 136, 0.08) 0%,
-    rgba(123, 168, 212, 0.04) 40%,
-    transparent 70%
-  );
-}
-
-/* ── Noise texture on surfaces ──────────────────────────────────────── */
-.surface-noise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-/* ── Mobile & Touch Optimizations ───────────────────────────────────── */
+/* ── Mobile touch optimizations ─────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* No custom cursor on touch devices */
-  body { cursor: auto; }
-  .cursor-ring { display: none; }
+  .grain-overlay { animation-duration: 1.5s; }
 
-  /* Slightly reduce grain on mobile for performance */
-  .grain-overlay { opacity: 0.02; animation-duration: 1.2s; }
-
-  /* Improve touch targets */
   button, a {
     min-height: 44px;
-    display: inline-flex;
-    align-items: center;
   }
-
-  /* Tighter but readable heading scale */
-  .heading-display { letter-spacing: -0.02em; }
-
-  /* Better mobile scroll feel */
-  .artwork-card { transform: none !important; }
-  .artwork-card::after { display: none; }
 }
 
-/* ── Tablet Breakpoint (iPad) ───────────────────────────────────────── */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .container-site { padding-inline: clamp(1.5rem, 3vw, 3rem); }
-
-  /* 2-column layout nudge for tablet featured grid */
-  .heading-display { font-size: clamp(4rem, 9vw, 7rem); }
+/* ── Light theme specific overrides ─────────────────────────────────── */
+[data-theme="light"] .grain-overlay {
+  mix-blend-mode: multiply;
 }
 
-/* ── GPU-safe transforms only ───────────────────────────────────────── */
-* {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* ── Focus visible for accessibility ───────────────────────────────── */
-:focus-visible {
-  outline: 2px solid rgba(200, 95, 136, 0.6);
-  outline-offset: 3px;
-  border-radius: 3px;
+[data-theme="light"] .glass-card {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
 }

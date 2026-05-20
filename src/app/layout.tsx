@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { LenisProvider } from "@/components/layout/LenisProvider";
 import { EasterEgg } from "@/components/shared/EasterEgg";
 import { PageTransition } from "@/components/shared/PageTransition";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -32,78 +33,31 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "ruriroo._ — art & stuff",
-  description:
-    "The official portfolio of ruriroo._ — Egyptian artist and college student. Pencil portraits, watercolour, mixed media illustrations. Follow on Instagram, TikTok, YouTube and Pinterest @ruriroo._",
+  title: "ruriroo._ | art",
+  description: "ruriroo._ — art. drawings. illustrations. @ruriroo._ on Instagram and TikTok.",
   keywords: [
-    "ruriroo",
-    "ruriroo._",
-    "ruriroo art",
-    "ruriroo artist",
-    "ruriroo portfolio",
-    "ruriroo instagram",
-    "ruriroo tiktok",
-    "ruriroo youtube",
-    "ruriroo pinterest",
-    "@ruriroo._",
-    "Egyptian artist",
-    "Egyptian art",
-    "Egyptian illustrator",
-    "pencil portrait art",
-    "sketchbook art",
-    "watercolor illustration",
-    "mixed media art",
-    "art portfolio",
-    "college artist",
-    "female artist",
-    "portrait illustration",
+    "ruriroo", "ruriroo._", "ruriroo art", "ruriroo drawings",
+    "ruriroo instagram", "ruriroo tiktok", "@ruriroo._",
+    "ruriroo portfolio", "ruriroo illustrations", "ruriroo sketchbook",
   ],
   authors: [{ name: "ruriroo._", url: "https://instagram.com/ruriroo._" }],
-  creator: "ruriroo._",
   metadataBase: new URL("https://ruriroo.vercel.app"),
-  alternates: {
-    canonical: "https://ruriroo.vercel.app",
-  },
   openGraph: {
-    title: "ruriroo._ — art & stuff",
-    description: "The official portfolio of ruriroo._ — Egyptian artist. Pencil, watercolour, mixed media.",
+    title: "ruriroo._",
+    description: "art. nothing more.",
     url: "https://ruriroo.vercel.app",
     siteName: "ruriroo._",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ruriroo._ — art & stuff",
-    description: "The official portfolio of ruriroo._ — Egyptian artist.",
-    creator: "@ruriroo._",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-    },
-  },
-
-
-  openGraph: {
-    title: "ruriroo._ — art & stuff",
-    description: "The official portfolio of ruriroo._ — Egyptian artist. Pencil, watercolour, mixed media.",
-    url: "https://ruriroo.vercel.app",
-    siteName: "ruriroo._",
-    locale: "en_US",
     type: "website",
     images: [{ url: "/artwork/DToAJ0kiDsD/DToAJ0kiDsD_1.jpg", width: 1080, height: 1080, alt: "ruriroo._ art" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ruriroo._ — art & stuff",
-    description: "The official portfolio of ruriroo._ — Egyptian artist.",
-    creator: "@ruriroo._",
+    title: "ruriroo._",
+    description: "art. nothing more.",
+    site: "@ruriroo_",
+    creator: "@ruriroo_",
   },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -117,14 +71,16 @@ export default function RootLayout({
       className={`scroll-smooth ${cormorant.variable} ${dmSans.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-void text-cream antialiased">
-        <LenisProvider />
-        <GrainOverlay />
-        <CustomCursor />
-        <EasterEgg />
-        <Navigation />
-        <main className="relative"><PageTransition>{children}</PageTransition></main>
-        <Footer />
+      <body className="antialiased">
+        <ThemeProvider>
+          <LenisProvider />
+          <GrainOverlay />
+          <CustomCursor />
+          <EasterEgg />
+          <Navigation />
+          <main className="relative"><PageTransition>{children}</PageTransition></main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

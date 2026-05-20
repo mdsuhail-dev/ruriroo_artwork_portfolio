@@ -2,79 +2,79 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const footerLinks = [
-  { href: "/universe", label: "Universe" },
-  { href: "/about", label: "About" },
-  { href: "/archive", label: "Archive" },
-];
-
-const socialLinks = [
-  { href: "https://instagram.com/ruriroo._", label: "Instagram" },
-  { href: "https://tiktok.com/@ruriroo._", label: "TikTok" },
-  { href: "https://www.youtube.com/@ruriroo", label: "YouTube" },
-  { href: "https://in.pinterest.com/ruriroo/", label: "Pinterest" },
+const SOCIALS = [
+  { href: "https://instagram.com/ruriroo._", label: "Instagram", handle: "@ruriroo._" },
+  { href: "https://tiktok.com/@ruriroo._", label: "TikTok", handle: "@ruriroo._" },
+  { href: "https://pinterest.com/ruriroo", label: "Pinterest", handle: "ruriroo" },
+  { href: "https://youtube.com/@ruriroo._", label: "YouTube", handle: "@ruriroo._" },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/50 bg-surface/30">
-      <div className="container-site py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <footer
+      className="mt-16"
+      style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-surface)" }}
+    >
+      <div className="container-site py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="star text-star">✦</span>
-              <span className="font-hand text-2xl text-cream">ruriroo._</span>
+            <div className="flex items-center gap-2 mb-3">
+              <span style={{ color: "var(--color-star)" }}>✦</span>
+              <span style={{ fontFamily: "var(--font-caveat)", fontSize: "1.5rem", color: "var(--color-cream)" }}>
+                ruriroo._
+              </span>
             </div>
-            <p className="text-sm text-muted leading-relaxed max-w-xs">
-              Egyptian artist & college student. I don&apos;t even know what my artstyle
-              is — so enjoy the gallery.
+            <p className="label" style={{ color: "var(--color-muted)", letterSpacing: "0.15em" }}>
+              art. nothing more.
             </p>
           </div>
 
-          {/* Navigation */}
+          {/* Socials */}
           <div>
-            <p className="label mb-4">Navigate</p>
-            <nav className="flex flex-col gap-3">
-              {footerLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-muted hover:text-cream transition-colors duration-300"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          {/* Social */}
-          <div>
-            <p className="label mb-4">Find me everywhere</p>
-            <div className="flex flex-col gap-3">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
+            <p className="label mb-5" style={{ color: "var(--color-faint)" }}>Find me</p>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              {SOCIALS.map((s, i) => (
+                <motion.a
+                  key={s.href}
+                  href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted hover:text-rose transition-colors duration-300 flex items-center gap-1.5"
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className="group flex items-center justify-between py-2.5 px-0"
+                  style={{ borderBottom: "1px solid var(--color-border)" }}
                 >
-                  {link.label}
-                  <span className="text-xs opacity-60">↗</span>
-                </a>
+                  <span
+                    className="text-sm font-medium transition-colors duration-200 group-hover:text-rose"
+                    style={{ color: "var(--color-cream)" }}
+                  >
+                    {s.label}
+                  </span>
+                  <span
+                    className="label transition-colors duration-200 group-hover:text-rose"
+                    style={{ color: "var(--color-faint)" }}
+                  >
+                    {s.handle} ↗
+                  </span>
+                </motion.a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-border/30">
-          <p className="label text-faint">
-            © {new Date().getFullYear()} ruriroo._ — all rights reserved.
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6"
+          style={{ borderTop: "1px solid var(--color-border)" }}
+        >
+          <p className="label" style={{ color: "var(--color-faint)" }}>
+            © {new Date().getFullYear()} ruriroo._
           </p>
-          <p className="label text-faint text-xs tracking-widest uppercase">
-            RURIROO-artist
+          <p className="label" style={{ color: "var(--color-faint)", opacity: 0.5 }}>
+            Made by Suhail
           </p>
         </div>
       </div>

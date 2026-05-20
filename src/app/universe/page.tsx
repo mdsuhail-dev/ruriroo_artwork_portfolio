@@ -1,71 +1,61 @@
 import type { Metadata } from "next";
 import { artworks, getArtworkImages } from "@/data/artworks";
-import { getAllArtworksAsync } from "@/lib/db";
-import type { ArtworkRecord } from "@/lib/db";
-import { UnifiedArtworkGrid } from "@/components/artwork/UnifiedArtworkGrid";
-import { SectionLabel } from "@/components/shared/SectionLabel";
 import { StarField } from "@/components/home/StarField";
-import type { UnifiedArtwork } from "@/components/artwork/UnifiedArtworkCard";
-
-export const dynamic = "force-dynamic";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Universe — ruriroo._",
-  description:
-    "Explore the full artwork universe of ruriroo._ — pencil portraits, watercolour, mixed media, fantasy, and nature studies.",
+  title: "Work — ruriroo._",
+  description: "All artwork by ruriroo._ — drawings, illustrations, and visual experiments.",
 };
 
-export default async function UniversePage() {
-  let uploadedWorks: ArtworkRecord[] = [];
-  try {
-    const all = await getAllArtworksAsync();
-    uploadedWorks = all.filter((a) => a.published);
-  } catch {}
-
-  const uploadedIds = new Set(uploadedWorks.map((a) => a.id));
-
-  // Build unified list: uploaded first (newest), then IG artworks
-  const unified: UnifiedArtwork[] = [
-    ...uploadedWorks.map((a) => ({
-      id: a.id,
-      title: a.title,
-      category: a.category,
-      imageSrc: a.images[0] || "",
-      imageCount: a.imageCount,
-      year: a.year,
-      showYear: true, // uploaded works always show year
-    })),
-    ...artworks
-      .filter((a) => !uploadedIds.has(a.id))
-      .map((a) => ({
-        id: a.id,
-        title: a.title,
-        category: a.category,
-        imageSrc: getArtworkImages(a)[0] || "",
-        imageCount: a.imageCount,
-        year: a.year,
-        showYear: false, // old IG posts don't show year
-      })),
-  ];
-
+export default function UniversePage() {
   return (
-    <div className="relative pt-32 pb-24 min-h-screen">
+    <div className="relative pb-24 min-h-screen" style={{ paddingTop: "clamp(5.5rem, 14vw, 8rem)" }}>
       <StarField />
-
       <div className="container-site relative z-10">
-        {/* Header */}
-        <div className="mb-16">
-          <SectionLabel>All Works</SectionLabel>
-          <h1 className="font-display text-7xl md:text-9xl text-cream mt-3 leading-none">
-            The <span className="italic text-rose">Universe</span>
+        {/* Minimal header */}
+        <div className="mb-10 md:mb-14">
+          <h1
+            style={{ fontFamily: "var(--font-cormorant)", fontWeight: 300, fontStyle: "italic", fontSize: "clamp(3rem, 10vw, 6rem)", color: "var(--color-cream)", lineHeight: 1 }}
+          >
+            work
           </h1>
-          <p className="mt-6 text-muted max-w-md leading-relaxed">
-            {unified.length} works. Pencil, watercolour, ink, marker — all from these sketchbooks.
-          </p>
         </div>
 
-        {/* Grid with filter */}
-        <UnifiedArtworkGrid artworks={unified} showFilter />
+        {/* Pure image grid — no titles, no filters, no labels */}
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+          {artworks.map((artwork, i) => {
+            const images = getArtworkImages(artwork);
+            return (
+              <Link
+                key={artwork.id}
+                href={`/work/${artwork.id}`}
+                className="group block mb-3 break-inside-avoid"
+              >
+                <div className="relative overflow-hidden bg-surface rounded-sm artwork-card">
+                  <Image
+                    src={images[0]}
+                    alt=""
+                    width={600}
+                    height={800}
+                    className="artwork-image object-cover w-full h-auto"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    loading={i < 8 ? "eager" : "lazy"}
+                  />
+                  {/* Carousel indicator only */}
+                  {artwork.imageCount > 1 && (
+                    <div className="absolute top-2 right-2 bg-void/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                      <span className="text-2xs text-muted/70">+{artwork.imageCount}</span>
+                    </div>
+                  )}
+                  {/* Hover — no text */}
+                  <div className="absolute inset-0 bg-void/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

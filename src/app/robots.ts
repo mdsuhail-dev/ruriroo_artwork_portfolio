@@ -1,15 +1,13 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://ruriroo.art";
   return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/admin", "/api/admin"],
-      },
-    ],
-    sitemap: `${base}/sitemap.xml`,
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: "/admin/",
+    },
+    sitemap: "https://ruriroo.vercel.app/sitemap.xml",
+    host: "https://ruriroo.vercel.app",
   };
 }
